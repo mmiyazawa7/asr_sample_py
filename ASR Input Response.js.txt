@@ -1,0 +1,26 @@
+//  the response body sent to the webhook when an input action finishes
+
+{
+    uuid : <string>,
+    conversation_uuid : <String>,
+    timestamp : <string>,
+    dtmf: {
+        timeout: true/false,
+        digits: <string>
+    },
+    speech: {
+        error : <string>,
+        results: [
+                {
+                    text: <string>,
+                    precision : <string>
+                },
+
+                {
+                    text : <string>,
+                    precision : <string>
+                }, ....
+        ]
+    }
+
+}

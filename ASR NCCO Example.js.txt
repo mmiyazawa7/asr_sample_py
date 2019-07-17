@@ -1,0 +1,35 @@
+// this is an example of the NCCO syntax to utilize the new "speech" option for gathering user input
+// This particular example shows using speech and DTMF in the same action, with a simple 2-choice IVR prompt before
+[
+  {
+    "action": "talk",
+    "voiceName": "Amy",
+    // "bargeIn": false,   -- note that the bargeIn option is not currently supported for the speech input action
+    "text": "Press or say 1, for option 1. Press or say 2, for option 2."
+  }
+  ,
+  {
+    "action": "input"
+      , "speech":
+      {
+        "context": [ "one","two" ]       // context helps the ASR engine recognize what is spoken
+        , "language": "en-us"            // the language option defines what the ASR engine will attempt to interpret
+        , "uuid": [ "293ue92u4jjdjsA" ]  // the uuid of the call leg where the input will be spoken
+        , "endOnSilence": 2              // optional. number of seconds of silence to end input after 2 <= endOnSilence <= 10, default 2
+      }
+      , "dtmf":
+      {
+        "submitOnHash": true
+        , "maxDigits": 4                // max 20, default 4 
+        , "timeOut": 5                  // max 10, default 3 (in seconds)
+      }
+      , "eventUrl": [ "https://example.com/ivr" ]
+      , "eventMethod": "POST"           // POST/GET, default POST
+  }
+  ,
+  {
+    "action": "talk"
+    , "voiceName": "Amy"
+    , "text": "Thank you for your selection. Please wait while we connect you"
+  }
+]

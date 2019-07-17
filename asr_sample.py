@@ -21,7 +21,8 @@ coloredlogs.install(level='DEBUG', logger=logger)
 
 app = Flask(__name__) 
 
-webhookurl="https://xxxxx.ap.ngrok.io"
+webhookurl="https://nexmodemo.ap.ngrok.io"
+
 
 @app.route("/answerURL", methods = ['GET', 'POST']) 
 def answer():    
@@ -64,22 +65,30 @@ def answer():
 
 @app.route('/dtmf_asr',methods=['GET', 'POST'])
 def dtmf_asr():
-    webhookContent = request.json
-    print(webhookContent)
     
+    # arg_uuid = request.args['uuid']
+    webhookContent = request.json
+    logger.debug(webhookContent)
+    
+#    try:
+#        result = webhookContent['dtmf']
+#    except:
+#        pass
+        
+
     digit_result = webhookContent['dtmf']['digits']
     print(digit_result)
-    
+
     asr_results = webhookContent['speech']['results']
     asr_text = asr_results[0]['text']
     print (asr_text)
-    print (asr_text.find("エージェント"))
-    
+
     # 
     # let's play with ASR input here
     # 
     
     if digit_result == '1' or asr_text.find("エージェント") >= 0 :
+        
         ncco = [
             {
                 # TTS and then, Connect to agent
@@ -93,11 +102,11 @@ def dtmf_asr():
         return resp
     else:
         ncco = [
-        {
-            "action": "talk",
-            "text": "お電話ありがとうございました。さようなら。",
-            "voiceName": "Mizuki"
-        }
+            {
+                "action": "talk",
+                "text": "お電話ありがとうございました",
+                "voiceName": "Mizuki"
+                }
         ]
         
         js = json.dumps(ncco)
